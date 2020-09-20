@@ -52,6 +52,16 @@ const quotes = [
   }
 ];
 
+const colors = [
+  "blue",
+  "red",
+  "rgb(58, 193, 98)",
+  "cyan",
+  "violet",
+  "orange",
+  "slategrey"
+];
+
 
 /***
  * `getRandomQuote` function
@@ -78,7 +88,6 @@ function printQuote() {
     html += `<span class="tags"> Tags: ${randomQuote.tags}</span>`
   }
   html += `</p>`
-  console.log(html);
   document.getElementById('quote-box').innerHTML = html; 
 }
 
@@ -86,13 +95,22 @@ function printQuote() {
  * `getRandomColor` function
 ***/
 function getRandomColor() {
-  
+  let randomNumber = parseInt(Math.random() * 6);
+  let mainBody = document.querySelector('body');
+  mainBody.style.backgroundColor = colors[randomNumber];
 }
-
 
 /***
  * click event listener for the print quote button
  * DO NOT CHANGE THE CODE BELOW!!
 ***/
 
-document.getElementById('load-quote').addEventListener("click", printQuote, false);
+setInterval(() => {
+  printQuote();
+  getRandomColor();
+}, 10000);
+
+document.getElementById('load-quote').addEventListener("click", () => {
+  printQuote();
+  getRandomColor();
+}, false);
