@@ -1,15 +1,8 @@
-/******************************************
-Treehouse FSJS Techdegree:
-project 1 - A Random Quote Generator
-******************************************/
+/* ============================================= */
+/*                   Script                      */
+/* ============================================= */
 
-// For assistance: 
-  // Check the "Project Resources" section of the project instructions
-  // Reach out in your Slack community - https://treehouse-fsjs-102.slack.com/app_redirect?channel=chit-chat
-
-/*** 
- * `quotes` array 
-***/
+//Quotes Array
 const quotes = [
   {
     quote: "The oldest and strongest emotion of mankind is fear, and the oldest and strongest kind of fear is fear of the unknown.",
@@ -52,28 +45,24 @@ const quotes = [
   }
 ];
 
-const colors = [
-  "blue",
-  "red",
-  "rgb(58, 193, 98)",
-  "cyan",
-  "violet",
-  "orange",
-  "slategrey"
-];
-
-
-/***
- * `getRandomQuote` function
-***/
+//Uses a random number to fetch a quote from the quotes array
 function getRandomQuote() {
-  let randomNumber = parseInt(Math.random() * 6);
+  let randomNumber = Math.floor(Math.random() * quotes.length);
   return quotes[randomNumber];
 }
 
-/***
- * `printQuote` function
-***/
+//Creates 3 variables, assigns them random numbers, and uses those numbers to
+//create an rgb value for the background-color of the body of the doucment
+function getRandomColor() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  const randomColor = `rgb(${r}, ${b}, ${g})`;
+  document.body.style.backgroundColor = randomColor;
+}
+
+//Calls getRandomQuote(), creates a variable containing html based on array data, prints
+//it to the screen, and calls getRandomColor() to change the background color
 function printQuote() {
   let randomQuote = getRandomQuote();
   let html = `<p class="quote">${randomQuote.quote}</p>
@@ -89,28 +78,29 @@ function printQuote() {
   }
   html += `</p>`
   document.getElementById('quote-box').innerHTML = html; 
+  getRandomColor();
 }
 
-/***
- * `getRandomColor` function
-***/
-function getRandomColor() {
-  let randomNumber = parseInt(Math.random() * 6);
-  let mainBody = document.querySelector('body');
-  mainBody.style.backgroundColor = colors[randomNumber];
-}
-
-/***
- * click event listener for the print quote button
- * DO NOT CHANGE THE CODE BELOW!!
-***/
-
-setInterval(() => {
+//Sets a time interval of 10 seconds and changes the quote and background color
+//at each interval
+let timer = setInterval(() => {
   printQuote();
   getRandomColor();
 }, 10000);
 
-document.getElementById('load-quote').addEventListener("click", () => {
-  printQuote();
-  getRandomColor();
-}, false);
+//resets the interval on printQuote() and getRandomColor()
+function resetInterval() {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    printQuote();
+    getRandomColor();
+  }, 10000);
+}
+
+//On click, calls printQuote() and getRandomColor()
+document.getElementById('load-quote').addEventListener("click", printQuote, false);
+
+//On click, clears the timer interval and calls resetInterval()
+document.getElementById('load-quote').addEventListener('click', () => {
+  resetInterval();
+});
